@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../fern-versions-yml.schema.json
+# For unreleased changes, use unreleased.yml
+- version: 0.0.1
+  createdAt: '2024-07-17'
+  changelogEntry:
+    - type: feat
+      summary: |
+        Initial release of the Rust SDK generator
+      added:
+        - Basic client generation with async/await support
+        - Strongly typed request and response models
+        - Built-in error handling with Result types
+        - JSON serialization/deserialization
+        - Configurable timeouts and retries
+        - Comprehensive documentation generation
+  irVersion: 58 

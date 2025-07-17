@@ -1,0 +1,56 @@
+irVersion: v58
+displayName: Rust SDK
+image: fernapi/fern-rust-sdk
+changelogLocation: ../../generators/rust/sdk/versions.yml
+
+buildScripts:
+  compileScript:
+    commands:
+      - cargo build --release
+  testScript:
+    commands:
+      - cargo test
+
+publish:
+  workingDirectory: generators/rust
+  preBuildCommands:
+    - cargo build --release
+    - pnpm --filter @fern-api/rust-sdk dist:cli
+  docker:
+    file: ./generators/rust/sdk/Dockerfile
+    image: fernapi/fern-rust-sdk
+    context: .
+
+test:
+  docker:
+    image: fernapi/fern-rust-sdk:latest
+    command: pnpm --filter @fern-api/rust-sdk dist:cli && docker build -f ./generators/rust/sdk/Dockerfile -t fernapi/fern-rust-sdk:latest .
+
+language: rust
+generatorType: SDK
+defaultOutputMode: github
+
+fixtures:
+  examples:
+    - outputFolder: no-custom-config
+      customConfig: null
+    - outputFolder: basic-config
+      customConfig:
+        packageName: "test-rust-sdk"
+        version: "0.1.0"
+        author: "Test Author"
+        description: "Test Rust SDK"
+
+scripts:
+  - docker: rust:1.70-alpine
+    commands:
+      - cargo build --release
+      - cargo test
+
+allowedFailures:
+  - alias-extends
+  - exhaustive
+  - literal
+  - mixed-case
+  - reserved-keywords
+  - trace 
